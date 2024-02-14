@@ -232,12 +232,15 @@ jobs:
 
 
 
+
   upload-to-itch:
     runs-on: ubuntu-latest
     needs:
       - check-if-upload-to-itch-is-configured
       - build-wasm
       - get-version
+    env:
+      VERSION: ${{needs.get-version.outputs.version}}
     if: ${{ needs.check-if-upload-to-itch-is-configured.outputs.should-upload == 'yes' }}
 
     steps:
