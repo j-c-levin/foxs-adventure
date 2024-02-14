@@ -189,17 +189,14 @@ jobs:
       - name: Build
         run: |
           cargo build --release --target wasm32-unknown-unknown
-
       - name: Prepare package
         run: |
           wasm-bindgen --no-typescript --out-name bevy_game --out-dir wasm --target web target/wasm32-unknown-unknown/release/${{ env.binary }}.wasm
           cp -r assets wasm/
-
       - name: Package as a zip
         working-directory: ./wasm
         run: |
           zip --recurse-paths ../${{ env.binary }}.zip .
-
       - name: Upload binaries to artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -248,7 +245,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./builds
-          name: ${{ env.binary }}-wasm-${{ env.VERSION }}.zip
       - name: Install butler
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
@@ -264,7 +260,7 @@ jobs:
           for channel in $(ls builds); do
             ./butler push \
                 --fix-permissions \
-                --userversion="${{ steps.get_version.outputs.tag }}" \
+                --userversion="${{ env.VERSION }}" \
                 builds/$channel/* \
                 ${{ env.itch_target }}:$channel
           done
