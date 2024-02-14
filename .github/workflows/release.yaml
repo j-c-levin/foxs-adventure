@@ -198,7 +198,7 @@ jobs:
         run: |
           zip --recurse-paths ../${{ env.binary }}.zip .
       - name: Upload binaries to artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: ${{ env.binary }}.zip
           name: wasm
@@ -226,11 +226,6 @@ jobs:
           else
             echo "has-itch-target=yes" >> $GITHUB_OUTPUT
           fi
-
-
-
-
-
 
   upload-to-itch:
     runs-on: ubuntu-latest
