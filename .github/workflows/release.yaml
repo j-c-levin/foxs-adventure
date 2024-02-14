@@ -74,6 +74,12 @@ jobs:
           mv build/macos/src/Game.app build/macos/src/${{ env.GAME_OSX_APP_NAME }}.app
           ln -s /Applications build/macos/src/
           hdiutil create -fs HFS+ -volname "${{ env.GAME_OSX_APP_NAME }}" -srcfolder build/macos/src ${{ env.GAME_EXECUTABLE_NAME }}.dmg
+      - name: Upload dmg to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.GAME_EXECUTABLE_NAME }}.dmg
+          name: mac_os
+          retention-days: 1
       - name: Upload release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -108,6 +114,12 @@ jobs:
       - name: Bundle release
         run: |
           tar -czf ${{ env.GAME_EXECUTABLE_NAME }}_linux.tar.gz ${{ env.GAME_EXECUTABLE_NAME }} assets credits
+      - name: Upload tar to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.GAME_EXECUTABLE_NAME }}_linux.tar.gz
+          name: linux
+          retention-days: 1
       - name: Upload release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -159,6 +171,12 @@ jobs:
           asset_name: ${{ env.GAME_EXECUTABLE_NAME }}_${{ env.VERSION }}_windows.zip
           tag: ${{ env.VERSION }}
           overwrite: true
+      - name: Upload zip to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.GAME_EXECUTABLE_NAME }}_windows.zip
+          name: windows_zip
+          retention-days: 1
       - name: Upload installer
         if: ${{ env.BUILD_INSTALLER }}
         uses: svenstaro/upload-release-action@v2
@@ -169,6 +187,13 @@ jobs:
           release_name: ${{ env.VERSION }}
           tag: ${{ env.VERSION }}
           overwrite: true
+      - name: Upload msi to artifacts
+        if: ${{ env.BUILD_INSTALLER }}
+        uses: actions/upload-artifact@v4
+        with:
+          path: installer/en-US/installer.msi
+          name: windows_installer
+          retention-days: 1
 
   build-wasm:
     runs-on: ubuntu-latest
@@ -203,7 +228,6 @@ jobs:
           path: ${{ env.binary }}.zip
           name: wasm
           retention-days: 1
-
       - name: Upload binaries to release
         if: ${{ env.add_binaries_to_github_release == 'true' }}
         uses: svenstaro/upload-release-action@v2
