@@ -1,17 +1,28 @@
 <!doctype html>
 <html lang="en">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<body style="margin: 0px;">
-<script type="module">
-    import './restart-audio-context.js'
-    import init from './bevy_game.js'
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Bevy game</title>
+    <link data-trunk rel="inline" href="styles.css"/>
+</head>
+<body>
+<div class="game-container">
+    <div class="lds-dual-ring"></div>
+    <canvas id="bevy">
+        Javascript and support for canvas is required
+    </canvas>
+    <script type="module">
+        import './restart-audio-context.js'
+        import init from './bevy_game.js'
 
-    init().catch((error) => {
-        if (!error.message.startsWith("Using exceptions for control flow, don't mind me. This isn't actually an error!")) {
-            throw error;
-        }
-    });
-</script>
+        init().catch((error) => {
+            if (!error.message.startsWith("Using exceptions for control flow, don't mind me. This isn't actually an error!")) {
+                throw error;
+            }
+        });
+    </script>
+</div>
 </body>
 
 </html>
