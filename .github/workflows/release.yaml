@@ -230,11 +230,15 @@ jobs:
 
 
 
+
   upload-to-itch:
     runs-on: ubuntu-latest
     needs:
       - check-if-upload-to-itch-is-configured
       - build-wasm
+      - build-linux
+      - build-windows
+      - build-macOS
       - get-version
     env:
       VERSION: ${{needs.get-version.outputs.version}}
